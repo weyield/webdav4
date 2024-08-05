@@ -330,7 +330,10 @@ class WebdavFileSystem(AbstractFileSystem):
     ) -> None:
         """Upload contents from the fileobj to the remote path."""
         rpath = self._strip_protocol(rpath)
-        self.mkdirs(os.path.dirname(rpath), exist_ok=True)
+        directory = os.path.dirname(rpath)
+
+        if directory not in ("", "/"):
+            self.mkdirs(directory, exist_ok=True)
 
         if size is None:
             size = peek_filelike_length(fobj)
